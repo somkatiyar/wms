@@ -1,0 +1,12 @@
+table {
+    width: 100%;
+  }
+  .mat-row.hovered {
+      background: #eee;
+      cursor: pointer;
+  }
+  
+  .mat-row.highlighted {
+    background: #999;
+  }
+

@@ -1,0 +1,32 @@
+.wordtab 
+{
+  min-width: 85px; 
+  display: inline-block;
+}
+
+.line{
+  margin-bottom: 15px;
+}
+
+table{
+  border: 2px solid gray;
+}
+
+section {
+  display: table;
+  margin: 8px;
+  margin-top: 30px;
+}
+table tbody input {
+ height: 33px;
+ border: 1px solid black
+}
+
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}
+.table-hint {
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+

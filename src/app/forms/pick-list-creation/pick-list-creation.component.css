@@ -1,0 +1,29 @@
+.right-align {
+    text-align: right;
+}
+
+  table.groupListTable td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 3px;
+    border: 1px solid black;
+    
+  }
+  table.groupListTable thead, th {
+  background-color: #a0c7e8;
+  }
+  .saveBtn {
+    text-align: center;
+    margin-top: 40px;
+  }
+  table.TOTable td th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 3px;
+    width: 200px;
+    border: 1px solid black;
+    text-align: center;
+  }
+/* .th-style {
+  width:200px;text-align: center;
+} */

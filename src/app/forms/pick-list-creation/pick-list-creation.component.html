@@ -1,0 +1,226 @@
+<mat-horizontal-stepper linear #stepper>
+    <mat-step [stepControl]="firstFormGroup" errorMessage="Name is required.">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Pending Transfer Order</ng-template>
+            <div class="screen-one">
+                <div fxLayout="row wrap" fxFlexAlign="center" class="row">
+                    <div fxFlex.gt-sm="20" fxFlex="100" class="p-10">
+                        <mat-form-field>
+                            <mat-select placeholder="Warehouse Name" (selectionChange)="onWarehouseChange($event)" required formControlName="warehouseName">
+                                <mat-option value="option">Option</mat-option>
+                                <mat-option value="option">Option2</mat-option>
+                                <mat-option value="option">Option3</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-hint
+                            *ngIf="firstFormGroup.controls['warehouseName'].hasError('required') && firstFormGroup.controls['warehouseName'].touched"
+                            class="text-danger font-14">Required.
+                        </mat-hint>
+                    </div>
+                    <div fxFlex.gt-sm="20" fxFlex="100" class="p-10 ">
+                        <mat-form-field>
+                            <input matInput placeholder="Warehouse Number" readonly formControlName="warehouseNumber">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex.gt-sm="20" fxFlex="100" class="p-10">
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="picker" formControlName="pickingDateTime" [min]="currentDate"
+                                placeholder="Choose a date">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <mat-hint
+                            *ngIf="firstFormGroup.controls['pickingDateTime'].hasError('required') && firstFormGroup.controls['pickingDateTime'].touched"
+                            class="text-danger font-14">You must include a date.</mat-hint>
+                    </div>
+                    <div fxFlex.gt-sm="20" fxFlex="100" class="p-10">
+                        <mat-form-field>
+                            <mat-select placeholder="Movement Type" required formControlName="movementType">
+                                <mat-option value="option">Option</mat-option>
+                                <mat-option value="option">Option2</mat-option>
+                                <mat-option value="option">Option3</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-hint
+                            *ngIf="firstFormGroup.controls['movementType'].hasError('required') && firstFormGroup.controls['movementType'].touched"
+                            class="text-danger font-14">Required.
+                        </mat-hint>
+                    </div>
+
+
+                    <div fxFlex.gt-sm="20" fxFlex="100" class="p-10 m-t-5">
+                        <button mat-raised-button color="primary" (click)="getPendingTO()">Get Pending TO</button>
+                    </div>
+                </div>
+            </div>
+
+          </form>
+
+          <div class="responsive-table" *ngIf="isTO">
+                <table mat-table [dataSource]="dataSource" class="example-container mat-elevation-z8 TOTable"  style="width: 100%;">
+                    <ng-container matColumnDef="select">
+                        <th mat-header-cell *matHeaderCellDef>
+                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                                [checked]="selection.hasValue() && isAllSelected()"
+                                [indeterminate]="selection.hasValue() && !isAllSelected()">
+                            </mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <mat-checkbox (click)="$event.stopPropagation()"
+                                (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                            </mat-checkbox>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="transferOrderNo">
+                        <th mat-header-cell *matHeaderCellDef> Transfer Order No </th>
+                        <td mat-cell *matCellDef="let element"> {{element.transferOrderNo}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="transferOrderDate">
+                        <th mat-header-cell *matHeaderCellDef> Transfer Order Date </th>
+                        <td mat-cell *matCellDef="let element"> {{element.transferOrderDate}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="deliveryDateTime">
+                        <th mat-header-cell *matHeaderCellDef> Delivery Date Time </th>
+                        <td mat-cell *matCellDef="let element"> {{element.deliveryDateTime}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="shipToParty">
+                        <th mat-header-cell *matHeaderCellDef> Ship To Party </th>
+                        <td mat-cell *matCellDef="let element"> {{element.shipToParty}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="pickingDateTime">
+                        <th mat-header-cell *matHeaderCellDef> Picking Date Time </th>
+                        <td mat-cell *matCellDef="let element"> {{element.pickingDateTime}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Material">
+                        <th mat-header-cell *matHeaderCellDef> Material </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Material}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="storageType">
+                        <th mat-header-cell *matHeaderCellDef> Storage Type </th>
+                        <td mat-cell *matCellDef="let element"> {{element.storageType}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="section">
+                        <th mat-header-cell *matHeaderCellDef> Section </th>
+                        <td mat-cell *matCellDef="let element"> {{element.section}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="storageBinCellNo">
+                        <th mat-header-cell *matHeaderCellDef> Storage Bin Cell No </th>
+                        <td mat-cell *matCellDef="let element"> {{element.storageBinCellNo}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="qtyUM">
+                        <th mat-header-cell *matHeaderCellDef> Qty UM </th>
+                        <td mat-cell *matCellDef="let element"> {{element.storageBinCellNo}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="qtyToPick">
+                        <th mat-header-cell *matHeaderCellDef> Qty To Pick </th>
+                        <td mat-cell *matCellDef="let element"> {{element.qtyToPick}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+                    </tr>
+                </table>
+            </div>
+
+        <div class="m-t-20">
+                <button mat-stroked-button color="primary" matStepperNext (click)="gotoSecondScreen()">Next</button>
+            </div>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" errorMessage="Fields are Required">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Create Pick List</ng-template>
+            <div class="screen-two">
+                <div fxLayout="row wrap" fxFlexAlign="center" class="row">
+                    <div fxFlex.gt-sm="20" fxFlex="100" class="p-10">
+                        <mat-form-field>
+                            <mat-select placeholder="Assign To" required formControlName="assignTo">
+                                <mat-option value="option">Option</mat-option>
+                                <mat-option value="option">Option2</mat-option>
+                                <mat-option value="option">Option3</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-hint
+                            *ngIf="secondFormGroup.controls['assignTo'].hasError('required') && secondFormGroup.controls['assignTo'].touched"
+                            class="text-danger font-14">Required.
+                        </mat-hint>
+                    </div>
+                    <div fxFlex.gt-sm="20" fxFlex="100" class="p-10 ">
+                        <mat-form-field>
+                            <input matInput placeholder="Warehouse Name" readonly formControlName="warehouseName">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex.gt-sm="20" fxFlex="100" class="p-10 ">
+                        <mat-form-field>
+                            <input matInput placeholder="Warehouse Number" readonly formControlName="warehouseNumber">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex.gt-sm="30" fxFlex="100" class="p-10">
+                        <mat-form-field>
+                            <mat-select placeholder="Group List Viewing/Printing" required formControlName="groupList">
+                                <mat-option value="option">Option</mat-option>
+                                <mat-option value="option">Option2</mat-option>
+                                <mat-option value="option">Option3</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-hint
+                            *ngIf="secondFormGroup.controls['groupList'].hasError('required') && secondFormGroup.controls['groupList'].touched"
+                            class="text-danger font-14">Required.
+                        </mat-hint>
+                    </div>
+                    <div fxFlex.gt-sm="10" fxFlex="100" class="p-10 m-t-5">
+                        <button mat-raised-button color="primary" (click)="groupForCreatedpickList()">show</button>
+
+                    </div>
+
+                </div>
+
+                <div *ngIf="isGroupListData">
+                    <ng-container *ngFor="let item of groupList">
+                        <div style="text-align: center;">
+                            <b>{{item.name}}</b>
+                        </div>
+                        <table style="width:100%;border: 1px solid black;border-collapse: collapse"  class="groupListTable" cellpadding="3"
+                            id="printTable">
+                            <thead>
+                                <tr>
+                                    <td>Picking Date Time</td>
+                                    <td>Material</td>
+                                    <td>Storage Type</td>
+                                    <td>Section</td>
+                                    <td>Storage Binn Cell No</td>
+                                    <td>Qty To Pick</td>
+                                    <td>Qty UM</td>
+
+                                </tr>
+                            </thead>
+
+                            <tbody *ngFor="let i of item.values">
+                                <tr>
+                                    <td>{{i.pickingDateTime}}</td>
+                                    <td>{{i.Material}}</td>
+                                    <td>{{i.storageType}}</td>
+                                    <td>{{i.section}}</td>
+                                    <td>{{i.storageBinCellNo}}</td>
+                                    <td>{{i.qtyToPick}}</td>
+                                    <td>{{i.qtyUM}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </ng-container>
+                    <div class="saveBtn">
+                        <button mat-raised-button color="primary" (click)="saveData()">Save</button>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="m-t-20">
+                <button mat-stroked-button color="primary" matStepperPrevious>Back</button>
+            </div>
+        </form>
+    </mat-step>
+
+
+</mat-horizontal-stepper>

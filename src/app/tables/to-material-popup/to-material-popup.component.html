@@ -1,0 +1,41 @@
+<div class="bg-light p-10 p-r-20 p-l-20">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search (Filter)">
+    </mat-form-field>
+  </div>
+<div class="responsive-table">
+    <mat-table [dataSource]="dataSource" matSort singleTemplateDataRows>
+    
+        <ng-container matColumnDef="matName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Material Code</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.matName}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="matDesc">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Material Description</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.matDesc}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="matCat">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Material Category </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.matCat}} </mat-cell>
+        </ng-container>
+
+       
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"
+        (click)="selectRow(row)" [9] [ngClass]="{hovered: row.hovered, highlighted: selection.isSelected(row)}"
+        (mouseover)="row.hovered = true" (mouseout)="row.hovered = false">
+        </mat-row>
+
+
+  
+    </mat-table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>
+<div mat-dialog-actions>
+    <button mat-button color="warn" mat-dialog-close>Cancel</button>
+    <button mat-button color="primary" [mat-dialog-close]="selectedTemp" cdkFocusInitial>Ok</button>
+  </div> 

@@ -1,0 +1,353 @@
+<mat-horizontal-stepper linear #stepper>
+    <mat-step [stepControl]="firstFormGroup" errorMessage="Name is required.">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Within Warehouse Movement</ng-template>
+            <div class="screen-one">
+                <div fxLayout="row wrap" fxFlexAlign="center" class="row">
+                    <div fxFlex.gt-sm="22" fxFlex="100" class="p-10">
+                        <mat-form-field>
+                            <mat-select placeholder="Warehouse Name" required formControlName="warehouseName"
+                                (selectionChange)="onWarehouseChange($event)">
+                                <mat-option value="option">Option</mat-option>
+                                <mat-option value="option">Option2</mat-option>
+                                <mat-option value="option">Option3</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-hint
+                            *ngIf="firstFormGroup.controls['warehouseName'].hasError('required') && firstFormGroup.controls['warehouseName'].touched"
+                            class="text-danger font-14">Required.
+                        </mat-hint>
+                    </div>
+                    <div fxFlex.gt-sm="22" fxFlex="100" class="p-10 ">
+                        <mat-form-field>
+                            <input matInput placeholder="Warehouse Number" readonly formControlName="warehouseNumber">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex.gt-sm="22" fxFlex="100" class="p-10">
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="picker" formControlName="pickingDateTime"
+                                [min]="currentDate" placeholder="Choose a date">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <mat-hint
+                            *ngIf="firstFormGroup.controls['pickingDateTime'].hasError('required') && firstFormGroup.controls['pickingDateTime'].touched"
+                            class="text-danger font-14">You must include a date.</mat-hint>
+                    </div>
+                    <div fxFlex.gt-sm="23" fxFlex="100" class="p-10">
+                        <mat-form-field>
+                            <mat-select placeholder="Movement Type" required formControlName="movementType">
+                                <mat-option value="option">Option</mat-option>
+                                <mat-option value="option">Option2</mat-option>
+                                <mat-option value="option">Option3</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-hint
+                            *ngIf="firstFormGroup.controls['movementType'].hasError('required') && firstFormGroup.controls['movementType'].touched"
+                            class="text-danger font-14">Required.
+                        </mat-hint>
+                    </div>
+
+
+                </div>
+
+                <div fxLayout="row wrap" fxFlexAlign="center" class="row">
+                    <div fxFlex.gt-sm="20" fxFlex="100" class="p-10">
+                        <mat-form-field>
+                            <input matInput placeholder="Material" formControlName="material">
+                        </mat-form-field>
+                        <mat-hint
+                            *ngIf="firstFormGroup.controls['material'].hasError('required') && firstFormGroup.controls['material'].touched"
+                            class="text-danger font-14">Required.
+                        </mat-hint>
+                    </div>
+                    <div fxFlex.gt-sm="10" fxFlex="100" class="p-10 m-t-10">
+                        <input mat-raised-button color="primary" (click)="openDialog()" type="button" value="Search..">
+                    </div>
+                    <div fxFlex.gt-sm="20" fxFlex="100" class="p-10 ">
+                        <mat-form-field>
+                            <input matInput placeholder="Material Desc." formControlName="materialDesc">
+                        </mat-form-field>
+                        <mat-hint
+                            *ngIf="firstFormGroup.controls['materialDesc'].hasError('required') && firstFormGroup.controls['materialDesc'].touched"
+                            class="text-danger font-14">Required.
+                        </mat-hint>
+                    </div>
+                    <div fxFlex.gt-sm="20" fxFlex="100" class="p-10">
+                        <mat-form-field>
+                            <input matInput placeholder="Material Qty" formControlName="matQty">
+                        </mat-form-field>
+                        <mat-hint
+                            *ngIf="firstFormGroup.controls['matQty'].hasError('required') && firstFormGroup.controls['matQty'].touched"
+                            class="text-danger font-14">Required.</mat-hint>
+                    </div>
+                    <div fxFlex.gt-sm="20" fxFlex="100" class="p-10">
+                        <mat-form-field>
+                            <input matInput placeholder="Unit" formControlName="matUnit">
+                        </mat-form-field>
+                        <mat-hint
+                            *ngIf="firstFormGroup.controls['matUnit'].hasError('required') && firstFormGroup.controls['matUnit'].touched"
+                            class="text-danger font-14">Required.
+                        </mat-hint>
+                    </div>
+
+
+
+                </div>
+                <div fxLayout="row wrap" fxFlexAlign="center" class="row">
+                    <div fxFlex.gt-sm="20" fxFlex="100" class="p-10">
+                        <button mat-raised-button color="primary" (click)="addMaterial()">Add Material</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+
+
+
+        <div class="m-t-20">
+            <button mat-stroked-button color="primary" matStepperNext (click)="clickNextOnFirstScreen()">Next</button>
+        </div>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" errorMessage="Fields are required.">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Transfer Order Creation</ng-template>
+            <div class="screen-two">
+                <div fxLayout="row wrap" fxFlexAlign="center" class="row">
+                    <div fxFlex.gt-sm="20" fxFlex="100" class="p-10">
+                        <mat-form-field>
+                            <input matInput placeholder="TO Date" formControlName="toDate" readonly>
+                        </mat-form-field>
+
+                    </div>
+                    <div fxFlex.gt-sm="20" fxFlex="100" class="p-10 ">
+                        <mat-form-field>
+                            <input matInput placeholder="TO Type" formControlName="toType" readonly>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex.gt-sm="20" fxFlex="100" class="p-10 ">
+                        <mat-form-field>
+                            <input matInput placeholder="No Of Material" formControlName="matCount" readonly>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex.gt-sm="30" fxFlex="100" class="p-10">
+                        <mat-form-field>
+                            <input matInput placeholder="Warehouse " formControlName="warehouse" readonly>
+                        </mat-form-field>
+
+                    </div>
+
+
+                </div>
+
+                <hr class="horizantal">
+                <div *ngFor="let item of selectedMaterialArray; let I = index">
+                    <form [formGroup]="finalGroup">
+                        <div formArrayName="selectedMatArray">
+                            <div fxLayout="row wrap" fxFlexAlign="center" class="row" [formGroupName]="I">
+                                <div fxFlex.gt-sm="20" fxFlex="100" class="p-10">
+                                    <mat-form-field>
+                                        <input matInput placeholder="Material" formControlName="matName">
+                                    </mat-form-field>
+
+                                </div>
+
+                                <div fxFlex.gt-sm="20" fxFlex="100" class="p-10 ">
+                                    <mat-form-field>
+                                        <input matInput placeholder="Material Desc." formControlName="matDesc">
+                                    </mat-form-field>
+
+                                </div>
+                                <div fxFlex.gt-sm="20" fxFlex="100" class="p-10">
+                                    <mat-form-field>
+                                        <input matInput placeholder="Material Qty" formControlName="matQty">
+                                    </mat-form-field>
+
+                                </div>
+                                <div fxFlex.gt-sm="20" fxFlex="100" class="p-10">
+                                    <mat-form-field>
+                                        <input matInput placeholder="Unit" formControlName="matUnit">
+                                    </mat-form-field>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </form>
+                    <div fxLayout="row wrap" fxFlexAlign="center" class="row m-t-30">
+                            <span><b>Source Stock Location</b> </span>
+                        </div>
+
+                    <div fxLayout="row wrap" fxFlexAlign="center" class="row" class="row m-t-30">
+
+                        <table style="border: 1px solid black;border-collapse: collapse;width: 100%;"
+                            class="groupListTable" id="printTable">
+                            <thead>
+                                <tr>
+                                    <td>Line No</td>
+                                    <td>Storage Type No</td>
+                                    <td>Storage Type Name</td>
+                                    <td>Section No</td>
+                                    <td>Section Name</td>
+                                    <td>Storage Bin Cell No</td>
+                                    <td>Qty inBin Cell</td>
+                                    <td>Unit</td>
+
+                                </tr>
+                            </thead>
+
+                            <tbody *ngFor="let i of item.matApi;let rowNo = index">
+                                <tr>
+                                    <td>
+                                        {{rowNo+1}}
+                                    </td>
+                                    <td>{{i.storageTypeNo}}</td>
+                                    <td>{{i.storageTypeName}}</td>
+                                    <td>{{i.sectionNo}}</td>
+                                    <td>{{i.sectionName}}</td>
+                                    <td>{{i.storageBinCellNo}}</td>
+                                    <td>{{i.qtyInBinCell}}</td>
+                                    <td>{{i.unit}}</td>
+
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Total</td>
+                                    <td>40</td>
+                                    <td></td>
+                                </tr>
+
+                            </tfoot>
+                        </table>
+
+
+                    </div>
+
+                    <div fxLayout="row wrap" fxFlexAlign="center" class="row m-t-30">
+                        <span><b>Destination Stock Location</b> </span>
+                    </div>
+
+                    <div fxLayout="row wrap" fxFlexAlign="center" class="row m-t-30">
+
+                        <table style="border: 1px solid black;border-collapse: collapse;width:100%"
+                            class="destinationMove">
+                            <thead>
+                                <tr>
+                                    <td>Line No</td>
+                                    <td>Storage Type No</td>
+                                    <td>Storage Type Name</td>
+                                    <td>Section No</td>
+                                    <td>Section Name</td>
+                                    <td>Storage Bin Cell No</td>
+                                    <td>Qty inBin Cell</td>
+                                    <td>Unit</td>
+                                    <td>
+                                        <button (click)="onAddRow()" *ngIf="addForm.get('rows')"
+                                            style="width: 67px;">Add
+                                        </button>
+                                    </td>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let row of getControls().reverse();let index = index;">
+
+                                    <td>
+                                        <input [formControl]="row.get('destLineNo')" style="width: 68px;">
+                                    </td>
+                                    <td>
+                                        <input [formControl]="row.get('destStorageTypeNo')" style="width: 111px;">
+                                    </td>
+                                    <td>
+
+                                        <select name="" id="" [formControl]="row.get('destStorageTypeName')"
+                                            style="width: 111px;">
+                                            <option value="name1">Name1</option>
+                                            <option value="name1">Name2</option>
+
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input [formControl]="row.get('destSectionNo')" style="width: 111px;">
+                                    </td>
+                                    <td>
+
+                                        <select name="" id="" [formControl]="row.get('destSectionName')"
+                                            style="width: 111px;">
+                                            <option value="section1">Section1</option>
+                                            <option value="section2">Section2</option>
+
+                                        </select>
+
+                                    </td>
+                                    <td>
+                                        <select name="" id="" [formControl]="row.get('destBinNo')"
+                                            style="width: 111px;">
+                                            <option value="section1">Bin1</option>
+                                            <option value="section2">Bin2</option>
+
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input [formControl]="row.get('destqty')" style="width: 111px;">
+                                    </td>
+                                 
+                                    <td>
+                                        <input [formControl]="row.get('destUnit')" style="width: 111px;"
+                                            (change)="getDestTotalQty($event)">
+                                         
+                                    </td>
+
+                                    <td>
+                                        <button (click)="onRemoveRow(index)">Remove</button>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Total</td>
+                                    <td>
+                                        <input type="text" style="width: 111px;">
+                                    </td>
+                                    <td></td>
+                                </tr>
+
+                            </tfoot>
+                         
+                        </table>
+
+
+                    </div>
+
+                    <hr class="horizantal">
+                    {{rows.value | json}}
+                </div>
+                <section class="final_submit">
+                    <button mat-raised-button color="primary">Create and Save Transfer order</button>
+                </section>
+
+            </div>
+            <div class="m-t-20">
+                <button mat-stroked-button color="primary" matStepperPrevious>Back</button>
+            </div>
+        </form>
+    </mat-step>
+
+
+</mat-horizontal-stepper>

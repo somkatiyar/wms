@@ -1,0 +1,28 @@
+<form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()" novalidate>
+  <ng-container *ngFor="let controls of fields">
+
+
+    <div fxLayout="row wrap">
+      <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+        <div color="primary">Start Value:</div>
+      </div>
+      <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+        <mat-form-field>
+          <input matInput [formControlName]="controls.label">
+        </mat-form-field>
+        <ng-container *ngFor="let validation of controls.validations">
+
+          <mat-hint
+            *ngIf="dynamicForm.controls[controls.label].hasError(validation.name) && dynamicForm.controls[controls.label].touched"
+            class="text-danger font-14">{{validation.message}}
+          </mat-hint>
+
+        </ng-container>
+
+
+      </div>
+
+    </div>
+  </ng-container>
+
+</form>

@@ -1,0 +1,31 @@
+table.groupListTable td, th {
+    text-align: left;
+    border: 1px solid black;
+    font-size: 0.8rem;
+    
+  }
+  table.groupListTable thead, th {
+  background-color: #a0c7e8;
+
+  }
+  table.destinationMove td, th {
+    text-align: left;
+    border: 1px solid black;
+    font-size: 0.8rem;
+    
+  }
+
+table.destinationMove thead, th{
+  background-color: orange;
+
+}
+
+  hr.horizantal {
+    border: 1px solid black;
+  }
+
+  .final_submit {
+   
+      text-align: center;
+      margin-top: 40px;
+  }

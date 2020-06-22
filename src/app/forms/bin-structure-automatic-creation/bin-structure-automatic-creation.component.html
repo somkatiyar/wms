@@ -1,0 +1,664 @@
+<div fxLayout="row wrap">
+    <div fxFlex.gt-sm="100" fxFlex="100">
+        <mat-card>
+            <mat-card-content>
+          
+                <div class="basic-form">
+                        <form [formGroup]="headerForm" >
+                    <div fxLayout="row wrap" fxFlexAlign="center" class="row">
+                 
+                        <div fxFlex.gt-sm="25" fxFlex="100" class="p-10">
+                            <mat-form-field>
+                                <mat-select placeholder="Warehouse Name*" (selectionChange)="onWarehouseChange($event)" [formControl]="headerForm.controls['warehouseName']">
+                                    <mat-option value="option">Option</mat-option>
+                                    <mat-option value="option">Option2</mat-option>
+                                    <mat-option value="option">Option3</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+              
+                        <div fxFlex.gt-sm="25" fxFlex="100" class="p-10">
+                            <mat-form-field>
+                                <input matInput readonly placeholder="Warehouse Number" [formControl]="headerForm.controls['warehouseNumber']">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex.gt-sm="25" fxFlex="100" class="p-10">
+                            <mat-form-field>
+                                <mat-select placeholder="Storage Type*"(selectionChange)="onStorageTypeChange($event)" [formControl]="headerForm.controls['storageType']">
+                                    <mat-option value="option">Option</mat-option>
+                                    <mat-option value="option">Option2</mat-option>
+                                    <mat-option value="option">Option3</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                       
+                        <div fxFlex.gt-sm="25" fxFlex="100" class="p-10">
+                            <mat-form-field>
+                                <input matInput placeholder="Storage Type Number" readonly [formControl]="headerForm.controls['storageNumber']">
+                            </mat-form-field>
+                        </div>
+                    
+                    </div>
+                    <div fxLayout="row wrap" fxFlexAlign="center" class="row">
+                        <div fxFlex.gt-sm="25" fxFlex="100" class="p-10">
+                            <mat-form-field>
+                                <mat-select placeholder="Storage Section*"(selectionChange)="onSectionChange($event)"   [formControl]="headerForm.controls['storageSection']">
+                                    <mat-option value="option">Option</mat-option>
+                                    <mat-option value="option">Option2</mat-option>
+                                    <mat-option value="option">Option3</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                       
+                        <div fxFlex.gt-sm="25" fxFlex="100" class="p-10">
+                            <mat-form-field>
+                                <input matInput placeholder="Section Number" readonly [formControl]="headerForm.controls['storageSectionNumber']">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <section>
+                            <div class="example-button-row ">
+                                <button mat-stroked-button color="primary" (click)="openDialog()">Select Template..</button>
+                            </div>
+                        </section>
+                        </form>
+                   
+                    <div fxLayout="row wrap" fxFlexAlign="center" class="row" *ngIf="selectedTemplate">
+                        <div fxFlex.gt-sm="20" fxFlex="100" class="p-10">
+                            <mat-form-field>
+                                <input name="name" [(ngModel)]="selectedTemplate.templateNo" matInput
+                                    placeholder="Template Number" readonly>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex.gt-sm="20" fxFlex="100" class="p-10">
+                            <mat-form-field>
+                                <input name="no" [(ngModel)]="selectedTemplate.name" matInput
+                                    placeholder="Template Name" readonly>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex.gt-sm="20" fxFlex="100" class="p-10">
+                            <mat-form-field>
+                                <input name="description" [(ngModel)]="selectedTemplate.description" matInput
+                                    placeholder="Template Str Desc" readonly>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex.gt-sm="20" fxFlex="100" class="p-10">
+                            <mat-form-field>
+                                <input name="structure" [(ngModel)]="selectedTemplate.structure" matInput
+                                    placeholder="Template Structure" readonly>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex.gt-sm="20" fxFlex="100" class="p-10">
+                            <mat-form-field>
+                                <input name="coordinate" [(ngModel)]="selectedTemplate.coordinate" matInput
+                                    placeholder="No of Coordinate" readonly>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                  
+
+
+                    <div *ngIf="selectedTemplate && selectedTemplate.structure == 'NN-NN'" class="storage_bin">
+                        
+                        <div fxLayout="row wrap" >
+                                <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                        
+                                        </div>
+                            <div *ngFor="let cellsHeader of customHeaderForBinCreate" class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20"
+                                fxFlex="20">
+                                <mat-label>
+                                    <b color="primary">{{cellsHeader}}</b>
+                                </mat-label>
+                            </div>
+                        </div>
+                        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+                            <div fxLayout="row wrap">
+                                    <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                    <div color="primary">Start Value:</div>
+                                    </div>
+                                <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                    <mat-form-field>
+                                        <input matInput   [formControl]="form.controls['colOneStart']">
+                                    </mat-form-field>
+                                    <mat-hint
+                                        *ngIf="form.controls['colOneStart'].hasError('required') && form.controls['colOneStart'].touched"
+                                        class="text-danger font-14">Required
+                                    </mat-hint>
+                                    <mat-hint
+                                        *ngIf="form.controls['colOneStart'].hasError('maxlength')"
+                                        class="text-danger font-14">can't exceed 2 digit
+                                    </mat-hint>
+                                    <mat-hint *ngIf="form.controls['colOneStart'].errors?.pattern" 
+                                    class="text-danger font-14">Only digit are allowed
+                                </mat-hint>
+                           
+                            </div>
+                            <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+
+                                        <mat-form-field>
+                                                <input matInput   [formControl]="form.controls['colTwoStart']">
+                                            </mat-form-field>
+                                            <mat-hint
+                                                *ngIf="form.controls['colTwoStart'].hasError('required') && form.controls['colTwoStart'].touched"
+                                                class="text-danger font-14">Required
+                                            </mat-hint>
+                                            <mat-hint
+                                                *ngIf="form.controls['colTwoStart'].hasError('maxlength')"
+                                                class="text-danger font-14">can't exceed 2 digit
+                                            </mat-hint>
+                                            <mat-hint *ngIf="form.controls['colTwoStart'].errors?.pattern" 
+                                            class="text-danger font-14">Only digit are allowed
+                                        </mat-hint>
+                             </div>
+                         
+                               
+                            </div>
+
+
+                            <div fxLayout="row wrap">
+                                    <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                            <div color="primary">End Value:</div>
+                                            </div>
+                                    <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                        <mat-form-field>
+                                            <input matInput   [formControl]="form.controls['colOneEnd']">
+                                        </mat-form-field>
+                                        <mat-hint
+                                            *ngIf="form.controls['colOneEnd'].hasError('required') && form.controls['colOneEnd'].touched"
+                                            class="text-danger font-14">Required
+                                        </mat-hint>
+                                        <mat-hint
+                                            *ngIf="form.controls['colOneEnd'].hasError('maxlength')"
+                                            class="text-danger font-14">can't exceed 2 digit
+                                        </mat-hint>
+                                        <mat-hint *ngIf="form.controls['colOneEnd'].errors?.pattern" 
+                                        class="text-danger font-14">Only digit are allowed
+                                    </mat-hint>
+                               
+                                </div>
+                                <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+    
+                                            <mat-form-field>
+                                                    <input matInput   [formControl]="form.controls['colTwoEnd']">
+                                                </mat-form-field>
+                                                <mat-hint
+                                                    *ngIf="form.controls['colTwoEnd'].hasError('required') && form.controls['colTwoEnd'].touched"
+                                                    class="text-danger font-14">Required
+                                                </mat-hint>
+                                                <mat-hint
+                                                    *ngIf="form.controls['colTwoEnd'].hasError('maxlength')"
+                                                    class="text-danger font-14">can't exceed 2 digit
+                                                </mat-hint>
+                                                <mat-hint *ngIf="form.controls['colTwoEnd'].errors?.pattern" 
+                                                class="text-danger font-14">Only digit are allowed
+                                            </mat-hint>
+                                 </div>
+                          
+                                   
+                                </div>
+
+
+
+
+                                <div fxLayout="row wrap">
+                                        <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                                <div color="primary">Increment:</div>
+                                                </div>
+                                        <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                            <mat-form-field>
+                                                <input matInput   [formControl]="form.controls['colOneIncr']">
+                                            </mat-form-field>
+                                            <mat-hint
+                                                *ngIf="form.controls['colOneStart'].hasError('required') && form.controls['colOneIncr'].touched"
+                                                class="text-danger font-14">Required
+                                            </mat-hint>
+                                            <mat-hint
+                                                *ngIf="form.controls['colOneIncr'].hasError('maxlength')"
+                                                class="text-danger font-14">can't exceed 2 digit
+                                            </mat-hint>
+                                            <mat-hint *ngIf="form.controls['colOneIncr'].errors?.pattern" 
+                                            class="text-danger font-14">Only digit are allowed
+                                        </mat-hint>
+                                   
+                                    </div>
+                                    <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+        
+                                                <mat-form-field>
+                                                        <input matInput   [formControl]="form.controls['colTwoIncr']">
+                                                    </mat-form-field>
+                                                    <mat-hint
+                                                        *ngIf="form.controls['colTwoIncr'].hasError('required') && form.controls['colTwoIncr'].touched"
+                                                        class="text-danger font-14">Required
+                                                    </mat-hint>
+                                                    <mat-hint
+                                                        *ngIf="form.controls['colTwoIncr'].hasError('maxlength')"
+                                                        class="text-danger font-14">can't exceed 2 digit
+                                                    </mat-hint>
+                                                    <mat-hint *ngIf="form.controls['colTwoIncr'].errors?.pattern" 
+                                                    class="text-danger font-14">Only digit are allowed
+                                                </mat-hint>
+                                     </div>
+                              
+                                       
+                                    </div>
+                                    <section>
+                                            <button mat-raised-button color="primary">Create Storage Bin Cells</button>
+                                        </section>
+                        </form>
+
+                    </div> 
+
+                    <div *ngIf="selectedTemplate && selectedTemplate.structure == 'CNN-NN-NN'" class="storage_bin">
+                        
+                        <div fxLayout="row wrap" >
+                                <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                        
+                                        </div>
+                            <div *ngFor="let cellsHeader of customHeaderForBinCreate" class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20"
+                                fxFlex="20">
+                                <mat-label>
+                                    <b color="primary">{{cellsHeader}}</b>
+                                </mat-label>
+                            </div>
+                        </div>
+                        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+                            <div fxLayout="row wrap">
+                                    <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                    <div color="primary">Start Value:</div>
+                                    </div>
+                                <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                    <mat-form-field>
+                                        <input matInput   [formControl]="form.controls['colOneStart']">
+                                    </mat-form-field>
+                                    <mat-hint
+                                        *ngIf="form.controls['colOneStart'].hasError('required') && form.controls['colOneStart'].touched"
+                                        class="text-danger font-14">Required
+                                    </mat-hint>
+                                    <mat-hint
+                                        *ngIf="form.controls['colOneStart'].hasError('maxlength')"
+                                        class="text-danger font-14">can't exceed 3 character
+                                    </mat-hint>
+                                    <mat-hint *ngIf="form.controls['colOneStart'].errors?.pattern" 
+                                    class="text-danger font-14">First letter Charracter
+                                </mat-hint>
+                           
+                            </div>
+                            <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+
+                                        <mat-form-field>
+                                                <input matInput   [formControl]="form.controls['colTwoStart']">
+                                            </mat-form-field>
+                                            <mat-hint
+                                                *ngIf="form.controls['colTwoStart'].hasError('required') && form.controls['colTwoStart'].touched"
+                                                class="text-danger font-14">Required
+                                            </mat-hint>
+                                            <mat-hint
+                                                *ngIf="form.controls['colTwoStart'].hasError('maxlength')"
+                                                class="text-danger font-14">can't exceed 2 character
+                                            </mat-hint>
+                                            <mat-hint *ngIf="form.controls['colTwoStart'].errors?.pattern" 
+                                            class="text-danger font-14">Only Number Allowed
+                                        </mat-hint>
+                             </div>
+                             <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+
+                                    <mat-form-field>
+                                            <input matInput   [formControl]="form.controls['colThreeStart']">
+                                        </mat-form-field>
+                                        <mat-hint
+                                            *ngIf="form.controls['colThreeStart'].hasError('required') && form.controls['colThreeStart'].touched"
+                                            class="text-danger font-14">Required
+                                        </mat-hint>
+                                        <mat-hint
+                                            *ngIf="form.controls['colThreeStart'].hasError('maxlength')"
+                                            class="text-danger font-14">can't exceed 2 character
+                                        </mat-hint>
+                                        <mat-hint *ngIf="form.controls['colThreeStart'].errors?.pattern" 
+                                        class="text-danger font-14">Only Number Allowed
+                                    </mat-hint>
+                         </div>
+                               
+                            </div>
+
+
+                            <div fxLayout="row wrap">
+                                    <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                            <div color="primary">End Value:</div>
+                                            </div>
+                                    <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                        <mat-form-field>
+                                            <input matInput   [formControl]="form.controls['colOneEnd']">
+                                        </mat-form-field>
+                                        <mat-hint
+                                            *ngIf="form.controls['colOneEnd'].hasError('required') && form.controls['colOneEnd'].touched"
+                                            class="text-danger font-14">Required
+                                        </mat-hint>
+                                        <mat-hint
+                                            *ngIf="form.controls['colOneEnd'].hasError('maxlength')"
+                                            class="text-danger font-14">can't exceed 3 character
+                                        </mat-hint>
+                                        <mat-hint *ngIf="form.controls['colOneEnd'].errors?.pattern" 
+                                        class="text-danger font-14">First letter Charracter
+                                    </mat-hint>
+                               
+                                </div>
+                                <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+    
+                                            <mat-form-field>
+                                                    <input matInput   [formControl]="form.controls['colTwoEnd']">
+                                                </mat-form-field>
+                                                <mat-hint
+                                                    *ngIf="form.controls['colTwoEnd'].hasError('required') && form.controls['colTwoEnd'].touched"
+                                                    class="text-danger font-14">Required
+                                                </mat-hint>
+                                                <mat-hint
+                                                    *ngIf="form.controls['colTwoEnd'].hasError('maxlength')"
+                                                    class="text-danger font-14">can't exceed 2 character
+                                                </mat-hint>
+                                                <mat-hint *ngIf="form.controls['colTwoEnd'].errors?.pattern" 
+                                                class="text-danger font-14">Only Number Allowed
+                                            </mat-hint>
+                                 </div>
+                                 <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+    
+                                        <mat-form-field>
+                                                <input matInput   [formControl]="form.controls['colThreeEnd']">
+                                            </mat-form-field>
+                                            <mat-hint
+                                                *ngIf="form.controls['colThreeEnd'].hasError('required') && form.controls['colThreeEnd'].touched"
+                                                class="text-danger font-14">Required
+                                            </mat-hint>
+                                            <mat-hint
+                                                *ngIf="form.controls['colThreeEnd'].hasError('maxlength')"
+                                                class="text-danger font-14">can't exceed 2 character
+                                            </mat-hint>
+                                            <mat-hint *ngIf="form.controls['colThreeEnd'].errors?.pattern" 
+                                            class="text-danger font-14">Only Number Allowed
+                                        </mat-hint>
+                             </div>
+                                   
+                                </div>
+
+
+
+
+                                <div fxLayout="row wrap">
+                                        <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                                <div color="primary">Increment:</div>
+                                                </div>
+                                        <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                            <mat-form-field>
+                                                <input matInput   [formControl]="form.controls['colOneIncr']">
+                                            </mat-form-field>
+                                            <mat-hint
+                                                *ngIf="form.controls['colOneStart'].hasError('required') && form.controls['colOneIncr'].touched"
+                                                class="text-danger font-14">Required
+                                            </mat-hint>
+                                            <mat-hint
+                                                *ngIf="form.controls['colOneIncr'].hasError('maxlength')"
+                                                class="text-danger font-14">can't exceed 2 character
+                                            </mat-hint>
+                                            <mat-hint *ngIf="form.controls['colOneIncr'].errors?.pattern" 
+                                            class="text-danger font-14">Only Number Allowed
+                                        </mat-hint>
+                                   
+                                    </div>
+                                    <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+        
+                                                <mat-form-field>
+                                                        <input matInput   [formControl]="form.controls['colTwoIncr']">
+                                                    </mat-form-field>
+                                                    <mat-hint
+                                                        *ngIf="form.controls['colTwoIncr'].hasError('required') && form.controls['colTwoIncr'].touched"
+                                                        class="text-danger font-14">Required
+                                                    </mat-hint>
+                                                    <mat-hint
+                                                        *ngIf="form.controls['colTwoIncr'].hasError('maxlength')"
+                                                        class="text-danger font-14">can't exceed 2 character
+                                                    </mat-hint>
+                                                    <mat-hint *ngIf="form.controls['colTwoIncr'].errors?.pattern" 
+                                                    class="text-danger font-14">Only Number Allowed
+                                                </mat-hint>
+                                     </div>
+                                     <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+        
+                                            <mat-form-field>
+                                                    <input matInput   [formControl]="form.controls['colThreeIncr']">
+                                                </mat-form-field>
+                                                <mat-hint
+                                                    *ngIf="form.controls['colThreeIncr'].hasError('required') && form.controls['colThreeIncr'].touched"
+                                                    class="text-danger font-14">Required
+                                                </mat-hint>
+                                                <mat-hint
+                                                    *ngIf="form.controls['colThreeIncr'].hasError('maxlength')"
+                                                    class="text-danger font-14">can't exceed 2 character
+                                                </mat-hint>
+                                                <mat-hint *ngIf="form.controls['colThreeIncr'].errors?.pattern" 
+                                                class="text-danger font-14">Only Number Allowed
+                                            </mat-hint>
+                                 </div>
+                                       
+                                    </div>
+                                    <section>
+                                            <button mat-raised-button color="primary">Create Storage Bin Cells</button>
+                                        </section>
+                        </form>
+
+                    </div> 
+
+                    <div *ngIf="selectedTemplate && selectedTemplate.structure == 'NNN-NN-C'" class="storage_bin">
+                        <div fxLayout="row wrap" >
+                                <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                        
+                                    </div>
+                            <div *ngFor="let cellsHeader of customHeaderForBinCreate" class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20"
+                                fxFlex="20">
+                                
+                                <mat-label>
+                                    <b color="primary">{{cellsHeader}}</b>
+                                </mat-label>
+                            </div>
+                        </div>
+                        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+                                <div fxLayout="row wrap">
+                                        <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                                <div color="primary">Start Value:</div>
+                                                </div>
+                                    <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                        <mat-form-field>
+                                            <input matInput   [formControl]="form.controls['colOneStart']">
+                                        </mat-form-field>
+                                        <mat-hint
+                                            *ngIf="form.controls['colOneStart'].hasError('required') && form.controls['colOneStart'].touched"
+                                            class="text-danger font-14">Required
+                                        </mat-hint>
+                                        <mat-hint
+                                            *ngIf="form.controls['colOneStart'].hasError('maxlength')"
+                                            class="text-danger font-14">can't exceed 3 character
+                                        </mat-hint>
+                                        <mat-hint *ngIf="form.controls['colOneStart'].errors?.pattern" 
+                                        class="text-danger font-14">Only Digit Allowed
+                                    </mat-hint>
+                               
+                                </div>
+                                <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+    
+                                            <mat-form-field>
+                                                    <input matInput   [formControl]="form.controls['colTwoStart']">
+                                                </mat-form-field>
+                                                <mat-hint
+                                                    *ngIf="form.controls['colTwoStart'].hasError('required') && form.controls['colTwoStart'].touched"
+                                                    class="text-danger font-14">Required
+                                                </mat-hint>
+                                                <mat-hint
+                                                    *ngIf="form.controls['colTwoStart'].hasError('maxlength')"
+                                                    class="text-danger font-14">can't exceed 2 character
+                                                </mat-hint>
+                                                <mat-hint *ngIf="form.controls['colTwoStart'].errors?.pattern" 
+                                                class="text-danger font-14">Only Digit Allowed
+                                            </mat-hint>
+                                 </div>
+                                 <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+    
+                                        <mat-form-field>
+                                                <input matInput   [formControl]="form.controls['colThreeStart']">
+                                            </mat-form-field>
+                                            <mat-hint
+                                                *ngIf="form.controls['colThreeStart'].hasError('required') && form.controls['colThreeStart'].touched"
+                                                class="text-danger font-14">Required
+                                            </mat-hint>
+                                            <mat-hint
+                                                *ngIf="form.controls['colThreeStart'].hasError('maxlength')"
+                                                class="text-danger font-14">can't exceed 1 character
+                                            </mat-hint>
+                                            <mat-hint *ngIf="form.controls['colThreeStart'].errors?.pattern" 
+                                            class="text-danger font-14">Only Character Allowed
+                                        </mat-hint>
+                             </div>
+                                   
+                                </div>
+    
+    
+                                <div fxLayout="row wrap">
+                                        <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                                <div color="primary">End Value:</div>
+                                                </div>
+                                        <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                            <mat-form-field>
+                                                <input matInput   [formControl]="form.controls['colOneEnd']">
+                                            </mat-form-field>
+                                            <mat-hint
+                                                *ngIf="form.controls['colOneEnd'].hasError('required') && form.controls['colOneEnd'].touched"
+                                                class="text-danger font-14">Required
+                                            </mat-hint>
+                                            <mat-hint
+                                                *ngIf="form.controls['colOneEnd'].hasError('maxlength')"
+                                                class="text-danger font-14">can't exceed 3 character
+                                            </mat-hint>
+                                            <mat-hint *ngIf="form.controls['colOneEnd'].errors?.pattern" 
+                                            class="text-danger font-14">Only Digit Allowed
+                                        </mat-hint>
+                                   
+                                    </div>
+                                    <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+        
+                                                <mat-form-field>
+                                                        <input matInput   [formControl]="form.controls['colTwoEnd']">
+                                                    </mat-form-field>
+                                                    <mat-hint
+                                                        *ngIf="form.controls['colTwoEnd'].hasError('required') && form.controls['colTwoEnd'].touched"
+                                                        class="text-danger font-14">Required
+                                                    </mat-hint>
+                                                    <mat-hint
+                                                        *ngIf="form.controls['colTwoEnd'].hasError('maxlength')"
+                                                        class="text-danger font-14">can't exceed 2 character
+                                                    </mat-hint>
+                                                    <mat-hint *ngIf="form.controls['colTwoEnd'].errors?.pattern" 
+                                                    class="text-danger font-14">Only Digit Allowed
+                                                </mat-hint>
+                                     </div>
+                                     <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+        
+                                            <mat-form-field>
+                                                    <input matInput   [formControl]="form.controls['colThreeEnd']">
+                                                </mat-form-field>
+                                                <mat-hint
+                                                    *ngIf="form.controls['colThreeEnd'].hasError('required') && form.controls['colThreeEnd'].touched"
+                                                    class="text-danger font-14">Required
+                                                </mat-hint>
+                                                <mat-hint
+                                                    *ngIf="form.controls['colThreeEnd'].hasError('maxlength')"
+                                                    class="text-danger font-14">can't exceed 1 character
+                                                </mat-hint>
+                                                <mat-hint *ngIf="form.controls['colThreeEnd'].errors?.pattern" 
+                                                class="text-danger font-14">Only Character Allowed
+                                            </mat-hint>
+                                 </div>
+                                       
+                                    </div>
+    
+    
+    
+    
+                                    <div fxLayout="row wrap">
+                                            <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                                    <div color="primary">Increment:</div>
+                                                    </div>
+                                            <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+                                                <mat-form-field>
+                                                    <input matInput   [formControl]="form.controls['colOneIncr']">
+                                                </mat-form-field>
+                                                <mat-hint
+                                                    *ngIf="form.controls['colOneStart'].hasError('required') && form.controls['colOneIncr'].touched"
+                                                    class="text-danger font-14">Required
+                                                </mat-hint>
+                                                <mat-hint
+                                                    *ngIf="form.controls['colOneIncr'].hasError('maxlength')"
+                                                    class="text-danger font-14">can't exceed 2 character
+                                                </mat-hint>
+                                                <mat-hint *ngIf="form.controls['colOneIncr'].errors?.pattern" 
+                                                class="text-danger font-14">Only Number Allowed
+                                            </mat-hint>
+                                       
+                                        </div>
+                                        <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+            
+                                                    <mat-form-field>
+                                                            <input matInput   [formControl]="form.controls['colTwoIncr']">
+                                                        </mat-form-field>
+                                                        <mat-hint
+                                                            *ngIf="form.controls['colTwoIncr'].hasError('required') && form.controls['colTwoIncr'].touched"
+                                                            class="text-danger font-14">Required
+                                                        </mat-hint>
+                                                        <mat-hint
+                                                            *ngIf="form.controls['colTwoIncr'].hasError('maxlength')"
+                                                            class="text-danger font-14">can't exceed 2 character
+                                                        </mat-hint>
+                                                        <mat-hint *ngIf="form.controls['colTwoIncr'].errors?.pattern" 
+                                                        class="text-danger font-14">Only Number Allowed
+                                                    </mat-hint>
+                                         </div>
+                                         <div class="p-0" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="20">
+            
+                                                <mat-form-field>
+                                                        <input matInput   [formControl]="form.controls['colThreeIncr']">
+                                                    </mat-form-field>
+                                                    <mat-hint
+                                                        *ngIf="form.controls['colThreeIncr'].hasError('required') && form.controls['colThreeIncr'].touched"
+                                                        class="text-danger font-14">Required
+                                                    </mat-hint>
+                                                    <mat-hint
+                                                        *ngIf="form.controls['colThreeIncr'].hasError('maxlength')"
+                                                        class="text-danger font-14">can't exceed 2 character
+                                                    </mat-hint>
+                                                    <mat-hint *ngIf="form.controls['colThreeIncr'].errors?.pattern" 
+                                                    class="text-danger font-14">Only Number Allowed
+                                                </mat-hint>
+                                     </div>
+                                           
+                                        </div>
+                                        <section>
+                                                <button mat-raised-button color="primary">Create Storage Bin Cells</button>
+                                            </section>
+                            </form>
+                    </div>
+                   
+
+                  
+
+
+                </div>
+                <div class="container">
+                    <div id="table"></div>
+                </div>
+
+
+
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+
+
+  <table mat-table [dataSource]="dataSource" >
+
+
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="structure">
+      <th mat-header-cell *matHeaderCellDef> Weight </th>
+      <td mat-cell *matCellDef="let element"> {{element.structure}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef> Symbol </th>
+      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+    </ng-container>
+    <ng-container matColumnDef="coordinate">
+      <th mat-header-cell *matHeaderCellDef> coordinate </th>
+      <td mat-cell *matCellDef="let element"> {{element.coordinate}} </td>
+    </ng-container>
+    <ng-container matColumnDef="templateNo">
+      <th mat-header-cell *matHeaderCellDef> templateNo </th>
+      <td mat-cell *matCellDef="let element"> {{element.templateNo}} </td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> status </th>
+      <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"
+      (click)="selectRow(row)" [9] [ngClass]="{hovered: row.hovered, highlighted: selection.isSelected(row)}"
+      (mouseover)="row.hovered = true" (mouseout)="row.hovered = false">
+    </tr>
+  </table>
+
+<div mat-dialog-actions>
+  <button mat-button color="warn" mat-dialog-close>Cancel</button>
+  <button mat-button color="primary" [mat-dialog-close]="selectedTemp" cdkFocusInitial>Ok</button>
+</div>
